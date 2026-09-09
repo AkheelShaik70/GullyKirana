@@ -1,0 +1,154 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GullyKirana - Neighborhood Stores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Authentication Overlay -->
+    <div id="authContainer" class="auth-container hidden">
+        <div class="auth-card">
+            <h2>Welcome to GullyKirana 🛒</h2>
+            <p id="authSubtitle">Please log in to continue</p>
+            <form id="authForm">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Email / Username</label>
+                    <input type="email" id="authEmail" required placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" required placeholder="••••••••">
+                </div>
+                <div class="form-group" id="roleGroup">
+                    <label>I am a:</label>
+                    <select id="authRole">
+                        <option value="customer">Customer</option>
+                        <option value="seller">Seller (Kirana Owner)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="storeNameGroup" style="display: none;">
+                    <label>Store Name</label>
+                    <input type="text" id="authStoreName" placeholder="e.g., Gupta Kirana Store">
+                </div>
+                <button type="submit" class="btn primary-btn full-width" id="authSubmitBtn">Log In</button>
+            </form>
+            <p class="auth-switch-text">
+                <span id="switchText">Don't have an account?</span> 
+                <a href="#" id="toggleAuthMode">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">🛒 GullyKirana</div>
+        <div class="nav-controls">
+            <span id="storeBadge" class="store-badge" style="display:none;"></span>
+            <button id="cartBtn" class="btn primary-btn" style="display:none;">🛒 Cart (<span id="cartCount">0</span>)</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+
+        <!-- CUSTOMER VIEW -->
+        <section id="customerView" class="view-section hidden">
+            <div class="banner">
+                <h1>Shop from Local Kirana Stores in Your Gully</h1>
+                <p>Choose a neighborhood store card below to browse items.</p>
+            </div>
+            
+            <!-- Store Selection Grid View -->
+            <div id="storeSelectionSection">
+                <h2 style="margin-bottom: 1rem; color: var(--primary);">Available Neighborhood Stores</h2>
+                <div id="storeCardGrid" class="store-card-grid"></div>
+            </div>
+
+            <!-- Store Products View (Hidden until a store card is clicked) -->
+            <div id="storeProductsSection" class="hidden">
+                <button id="backToStoresBtn" class="btn secondary-btn" style="margin-bottom: 1rem;">← Back to Stores</button>
+                <h2 id="selectedStoreTitle" style="color: var(--primary); margin-bottom: 1rem;"></h2>
+                
+                <div class="filters">
+                    <input type="text" id="searchInput" placeholder="Search items in this store...">
+                </div>
+
+                <div id="productGrid" class="product-grid"></div>
+            </div>
+
+            <div class="customer-orders-section" style="margin-top: 3rem;">
+                <h2>My Orders Status</h2>
+                <div id="customerOrdersList" class="orders-list" style="margin-top: 1rem;"></div>
+            </div>
+        </section>
+
+        <!-- SELLER VIEW -->
+        <section id="sellerView" class="view-section hidden">
+            <div class="seller-dashboard">
+                <h2 id="sellerDashboardTitle">Seller Dashboard</h2>
+                
+                <div class="dashboard-card">
+                    <h3>Add New Item to Your Store</h3>
+                    <form id="addProductForm" class="card-form" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" id="prodName" required placeholder="e.g., Aashirvaad Atta 5kg">
+                        </div>
+                        <div class="form-group">
+                            <label>Price (₹)</label>
+                            <input type="number" id="prodPrice" required placeholder="250">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="prodCategory">
+                                <option value="Staples">Staples & Grains</option>
+                                <option value="Dairy">Dairy & Breakfast</option>
+                                <option value="Snacks">Snacks & Beverages</option>
+                                <option value="Household">Household Essentials</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="url" id="prodImage" required placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit" class="btn primary-btn">Publish Product</button>
+                    </form>
+                </div>
+
+                <div class="dashboard-card" style="margin-top: 2rem;">
+                    <h3>Incoming Store Orders</h3>
+                    <div id="sellerOrdersList" class="orders-list" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal hidden">
+        <div class="modal-content">
+            <span id="closeCart" class="close-btn">&times;</span>
+            <h2>Your Shopping Cart</h2>
+            <div id="cartItemsList" class="cart-items-container"></div>
+            <div class="cart-summary">
+                <h3>Total: ₹<span id="cartTotal">0</span></h3>
+                <div class="payment-options">
+                    <label><input type="radio" name="paymentMethod" value="COD" checked> Cash on Delivery (COD)</label>
+                    <label><input type="radio" name="paymentMethod" value="Online"> Online Payment (Simulated)</label>
+                </div>
+                <button id="checkoutBtn" class="btn primary-btn full-width">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
